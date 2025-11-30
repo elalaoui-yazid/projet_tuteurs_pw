@@ -1,0 +1,67 @@
+/* ==============================
+   Style de base global
+============================== */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* ==============================
+   En-tête
+============================== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px 40px;
+}
+
+/* ==============================
+   Logo
+============================== */
+.logo img {
+    height: 50px;
+    width: auto;
+}
+
+/* ==============================
+   Menu de navigation
+============================== */
+.liste ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 25px;
+}
+
+.liste ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.liste ul li a:hover {
+    color: #1abc9c;
+}
+
+/* ==============================
+   Responsive (petits écrans)
+============================== */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .liste ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+

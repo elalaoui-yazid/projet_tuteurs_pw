@@ -3,3 +3,12 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+
+calcul.nombre:
+    path : /calcul/{nombre}
+    controller: App\Controller\MainController::indexter
+    requirements: 
+        nombre: '^(100|[1-9]?[0-9])$'
+    
+
