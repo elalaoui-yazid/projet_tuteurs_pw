@@ -1,0 +1,88 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Login{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+        .messages {
+            max-width: 350px;
+            margin: 20px auto;
+            padding: 10px;
+        }
+
+        .messages h3 {
+            background: #ffdddd;
+            border-left: 4px solid #ff5c5c;
+            padding: 10px;
+            border-radius: 6px;
+            color: #b80000;
+            font-size: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        form {
+            max-width: 350px;
+            margin: 50px auto;
+            padding: 25px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-family: Arial, sans-serif;
+        }
+
+        form input[type="email"],
+        form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        form input[type="submit"] {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        form input[type="submit"]:hover {
+            background: #45a049;
+        }
+
+        form label {
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+
+
+    
+
+
+
+    {% if message is defined %}
+        <div class="messages">
+            <h3>ⓘ {{ message }}</h3>
+        </div>
+    {% endif %}
+
+    <form action="/login" method="POST">
+
+        <label>Email Tuteur :</label><br>
+        <input type="email" name="email" required>
+
+        <input type="submit" value="Login" name="submit">
+
+    </form>
+
+{% endblock %}

@@ -8,32 +8,30 @@
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         {% endblock %}
 
-
         {% block javascripts %}
         {% endblock %}
     </head>
     <body>
-        {% block body %}
-            <div class="header">
-
-                <div class="logo">
-                    <img src="{{ asset('images/logo.png') }}" alt="logo">
-
-                </div>
-
-                <div class="liste">
-                    <ul>
-                        <li><a href="/loginPage">Login</a></li>
-                        <li><a>Etudiants</a></li>
-                        <li><a>Sujets</a></li>
-
-                    </ul>
-
-                </div>
-
-
+        {# Header toujours présent #}
+        <div class="header">
+            <div class="logo">
+                <a href="/index"><img src="{{ asset('images/logo.png') }}" alt="logo"></a>
             </div>
-        
+
+            <div class="liste">
+                <ul>
+                    {% if userName is defined %}
+                        <li><a href="#">{{ userName }}</a></li>
+                        <li><a href="/logout">Déconnexion</a></li>
+                    {% else %}
+                        <li><a href="/loginPage">Connexion</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+
+        {# Contenu spécifique de chaque page #}
+        {% block body %}
         {% endblock %}
     </body>
 </html>

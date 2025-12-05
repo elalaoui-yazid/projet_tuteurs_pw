@@ -19,19 +19,10 @@ final class LoginController extends AbstractController
         $this->em = $em;
     }
 
-//machi blastou
-
- #[Route('/loginPage', name: 'login')]
-    public function loginAcces(): Response
-    {
-    
-        return $this->render('tuteur/login.html.twig');
-    }
 
 
-
-    #[Route('/login', name: 'app_login' ,methods:['POST'])]
-    public function index(Request $request): Response
+    #[Route('/login', name: 'login' ,methods:['POST'])]
+    public function login(Request $request): Response
     {
         
         $emailUser=$request->request->get('email');
@@ -43,10 +34,31 @@ final class LoginController extends AbstractController
         if(isset($user)){
             $session = $request->getSession();
             $session->set('tuteur_id', $user->getId());
+           
             return $this->render('tuteur/dashboard.html.twig', ['userName'=>$user->getNom()]);
         }
 
         $error = "Erreur de connexion, Email inconnu";
         return $this->render('loginFail.html.twig',['erreur'=>$error]);
+    }
+
+
+
+     #[Route('/logout', name: 'logout')]
+    public function logout(Request $request): Response
+    {
+        $session = $request->getSession();
+
+        if($session->has('tuteur_id')){
+            $session->remove('tuteur_id');
+
+            $message = "Déconnexion faite avec succes";
+
+            return $this->render('login/login.html.twig',['message'=>$message]);
+
+        }
+
+        $message = "Erreur servenue lors de la Déconnexion";
+        return $this->render('tuteur/dashboard.html.twig',['message'=>$message]); 
     }
 }
