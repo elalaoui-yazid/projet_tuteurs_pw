@@ -147,8 +147,8 @@ td[colspan] {
                 <td>{{etudiant.prenom}}</td>
                 <td>{{etudiant.formation}}</td>
                 <td class="actions">
-                  <a href="" class="action-btn view-btn">Voir visites</a>
-                  <a href="" class="action-btn add-btn">Ajouter visite</a>
+                  <a href="/showAllVisites/{{etudiant.id}}" class="action-btn view-btn">Voir visites</a>
+                  <a href="/addVisiteForm/{{etudiant.id}}" class="action-btn add-btn">Ajouter visite</a>
                   <a href="/updateStudentForm/{{etudiant.id}}" class="action-btn edit-btn">Modifier</a>
                   <a href="" class="action-btn delete-btn">Supprimer</a>
               </td>

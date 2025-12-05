@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Etudiant;
 use App\Entity\Tuteur;
+use App\Entity\Visite;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -179,6 +180,189 @@ final class GestionEtudiantsController extends AbstractController{
       
       
     }
+
+
+    
+
+          #[Route('/showAllVisites/{id}', name: 'showAllVisites')]
+    public function showAllVisites(Request $request, $id): Response{ 
+      
+
+      $repository = $this->em->getRepository(Etudiant::class);
+
+      $etudiant = $repository->find($id);
+
+
+      $visites = $etudiant->getVisites();
+
+      $tabVisites = [];
+
+      foreach($visites as $visite){
+        array_push($tabVisites, ['id'=>$visite->getId(),'date'=>$visite->getDate(),'commantaire'=>$visite->getCommentaire(),'compteRendu'=>$visite->getCompteRendu(),'statut'=>$visite->getStatut()]);
+      }
+
+
+      return $this->render('tuteur/showAllVisites.html.twig', ['etudiant_id'=>$etudiant->getId(),'etudiant_nom'=>$etudiant->getNom(), 'etudiant_prenom'=>$etudiant->getPrenom(), 'etudiant_formation'=>$etudiant->getFormation(), 'visites'=>$tabVisites]);
+    }
+
+
+
+
+
+      #[Route('/addVisiteForm/{id}', name: 'addVisiteForm')]
+    public function addVisiteForm(Request $request, $id): Response{ 
+    
+      return $this->render('tuteur/addVisiteForm.html.twig', ['id'=>$id]);
+    }
+
+
+    #[Route('/addVisite/{id}', name: 'addVisite')]
+    public function addVisite(Request $request, $id): Response{ 
+
+      $repository1 = $this->em->getRepository(Tuteur::class);
+      $tuteur = $repository1->find($request->getSession()->get('tuteur_id'));
+
+      $repository2 = $this->em->getRepository(Etudiant::class);
+      $etudiant = $repository2->find($id);
+
+      $message="";
+
+      if(isset($_POST['submit']) && isset($_POST['statut'])){
+        $dateString = $_POST['date'];
+        $commentaire = $_POST['commentaire'];
+        $statut = $_POST['statut'];
+        
+
+
+        $date = new \DateTimeImmutable($dateString);
+
+        $visite = new Visite();
+        $visite->setDate($date);
+        $visite->setCommentaire($commentaire);
+        
+        $visite->setStatut($statut);
+        $visite->setEtudiant($etudiant);
+        $visite->setTuteur($tuteur);
+
+        try{
+          $this->em->persist($visite);
+          $this->em->flush();
+          $message= "Visite créer avec succes poour l'étudiant : " .$etudiant->getNom() ." " . $etudiant->getPrenom(); 
+        }
+
+        catch(Exception $e){
+          $message = "Erreur lors de la création de la visite pour l'étudiant ".$etudiant->getNom() ." " . $etudiant->getPrenom() ." : " . $e->getMessage();
+        }
+      }
+
+      $repository = $this->em->getRepository(Etudiant::class);
+
+      $etudiant = $repository->find($id);
+
+
+      $visites = $etudiant->getVisites();
+
+      $tabVisites = [];
+
+      foreach($visites as $visite){
+        array_push($tabVisites, ['id'=>$visite->getId(),'date'=>$visite->getDate(),'commantaire'=>$visite->getCommentaire(),'compteRendu'=>$visite->getCompteRendu(),'statut'=>$visite->getStatut()]);
+      }
+
+      return $this->render('tuteur/showAllVisites.html.twig', ['etudiant_id'=>$etudiant->getId(),'etudiant_nom'=>$etudiant->getNom(), 'etudiant_prenom'=>$etudiant->getPrenom(), 'etudiant_formation'=>$etudiant->getFormation(), 'visites'=>$tabVisites, 'message'=>$message]);
+
+    }
+
+
+
+
+
+
+
+      #[Route('/editVisiteForm/{id_etudiant}/{id_visite}', name: 'editVisiteForm')]
+    public function editVisiteForm(Request $request, $id_visite, $id_etudiant ): Response{ 
+
+      $repository = $this->em->getRepository(Visite::class);
+
+      $visite = $repository->find($id_visite);
+
+      $visite_commentaire = $visite->getCommentaire();
+    
+      return $this->render('tuteur/updateVisiteForm.html.twig', ['id_visite'=>$id_visite, 'id_etudiant'=>$id_etudiant, 'commentaire'=>$visite_commentaire ]);
+    }
+
+
+
+      #[Route('/edit/visite/{id_etudiant}/{id_visite}', name: 'editVisite')]
+    public function editVisite(Request $request, $id_etudiant, $id_visite): Response{ 
+
+      $message="";
+
+      if(isset($_POST['submit'])){
+        if(isset($_POST['statut'])){
+
+          $new_statut = $_POST['statut'];
+          
+          $new_dateString = $_POST['date'];
+
+          $new_commentaire = $_POST['commentaire'];
+
+          $repository = $this->em->getRepository(Visite::class);
+
+          $visite = $repository->find($id_visite);
+
+          $visite->setDate(new \DateTimeImmutable($new_dateString));
+          $visite->setCommentaire($new_commentaire);
+          $visite->setStatut($new_statut);
+
+          try{
+            $this->em->flush();
+            $message = "Visite modifiée avec succes";
+          }
+
+          catch(Exception $e){
+            $message = "Erreur lors de la modification de la visite";
+          }
+
+          
+
+        }
+
+      
+
+      }
+    
+      $repository = $this->em->getRepository(Etudiant::class);
+
+      $etudiant = $repository->find($id_etudiant);
+
+
+      $visites = $etudiant->getVisites();
+
+      $tabVisites = [];
+
+      foreach($visites as $visite){
+        array_push($tabVisites, ['id'=>$visite->getId(),'date'=>$visite->getDate(),'commantaire'=>$visite->getCommentaire(),'compteRendu'=>$visite->getCompteRendu(),'statut'=>$visite->getStatut()]);
+      }
+
+      return $this->render('tuteur/showAllVisites.html.twig', ['etudiant_id'=>$etudiant->getId(),'etudiant_nom'=>$etudiant->getNom(), 'etudiant_prenom'=>$etudiant->getPrenom(), 'etudiant_formation'=>$etudiant->getFormation(), 'visites'=>$tabVisites, 'message'=>$message]);
+
+      
+    }
+
+
+
+
+
+
+     #[Route('compteRenduForm/{id_etudiant}/{id_visite}', name: 'visiteCompteRenduForm')]
+    public function compteRenduVisite(Request $request, $id_etudiant, $id_visite): Response{ 
+      
+     return $this->render('compteRenduForm.html.twig',['etudiant_id'=>$id_etudiant, 'visite_id'=>$id_visite]);
+    }
+
+
+
+
 
 
 

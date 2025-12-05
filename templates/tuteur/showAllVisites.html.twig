@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des visites - {{etudiant_nom}} {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        table {
+            width: fit-content;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        th {
+            background-color: #34495e;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f5f7fa;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td[colspan] {
+            text-align: center;
+            font-style: italic;
+            color: #777;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        /* Style bouton Modifier */
+        .btn-modifier {
+            display: inline-block;
+            padding: 5px 12px;
+            background-color: #f1c40f; /* jaune */
+            color: #333;
+            font-weight: bold;
+            font-size: 13px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-modifier:hover {
+            background-color: #d4ac0d;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+
+        .messages {
+            max-width: 350px;
+            margin: 20px auto;
+            padding: 10px;
+        }
+
+        .messages h3 {
+            background: #ffdddd;
+            border-left: 4px solid #ff5c5c;
+            padding: 10px;
+            border-radius: 6px;
+            color: #b80000;
+            font-size: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+
+
+{% block body%}
+
+
+    {% if message is defined %}
+        <div class="messages">
+            <h3>ⓘ {{ message }}</h3>
+        </div>
+    {% endif %}
+
+
+
+<h2>Visites de : {{etudiant_nom}} {{etudiant_prenom}} - {{etudiant_formation}}</h2>
+
+<table>
+  <tr><th>Date</th><th>Commantaire</th><th>Compte Rendu</th><th>Statut</th><th>Actions</th></tr>
+
+  {% for visite in visites %}
+    <tr>
+    <td>{{visite.date|date('d/m/Y H:i')}}</td>  <!-- le H pour les heures et le i pour les minutes-->
+    <td>{{visite.commantaire}}</td>
+    <td>{% if visite.compteRendu is not empty %} {{visite.compteRendu}} {% else %} SANS {% endif %} </td>
+    <td>{{visite.statut}}</td>
+    <td><a href="/editVisiteForm/{{etudiant_id}}/{{visite.id}}" class="btn-modifier">Modifier</a ><br><br><a class="btn-modifier" href="/visites/{{etudiant_id}}/{{visite.id}}/compte-rendu">Compte Rendu</a></td>
+    </tr>
+  {% else %}
+    <tr>
+    <td clospan="4">Aucune visite pour cet étudiant</td>
+    </tr>
+  
+  {% endfor %}
+
+
+{% endblock %}

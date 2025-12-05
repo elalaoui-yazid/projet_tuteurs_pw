@@ -1,0 +1,87 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Gestion d'étudiant {% endblock %}
+
+
+{% block stylesheets %}
+{{ parent() }}
+
+<style>
+
+/* Conteneur du formulaire */
+form {
+    width: 350px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #f9fafc;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Inputs */
+form input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-bottom: 15px;
+    transition: 0.2s;
+}
+
+/* Effet focus */
+form input[type="text"]:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 6px rgba(52,152,219,0.3);
+    outline: none;
+}
+
+/* Bouton */
+form input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background: #1abc9c;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Hover bouton */
+form input[type="submit"]:hover {
+    background: #16a085;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Effet clic */
+form input[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+</style>
+{% endblock %}
+
+
+
+{% block body %}
+
+  {{ parent() }}
+
+  
+  <form action="/visite/{{id_etudiant}}/{{id_visite}}/compte-rendu" method="POST">
+
+  
+
+  </form>
+
+
+
+{% endblock %}
+
+
