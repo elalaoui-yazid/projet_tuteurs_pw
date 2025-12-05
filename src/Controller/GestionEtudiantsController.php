@@ -356,8 +356,14 @@ final class GestionEtudiantsController extends AbstractController{
 
      #[Route('compteRenduForm/{id_etudiant}/{id_visite}', name: 'visiteCompteRenduForm')]
     public function compteRenduVisite(Request $request, $id_etudiant, $id_visite): Response{ 
+
+      $repository = $this->em->getRepository(Visite::class);
+
+      $visite = $repository->find($id_visite);
+
+      $ancien_compte_rendu = $visite->getCompteRendu();
       
-     return $this->render('compteRenduForm.html.twig',['etudiant_id'=>$id_etudiant, 'visite_id'=>$id_visite]);
+     return $this->render('tuteur/compteRenduForm.html.twig',['etudiant_id'=>$id_etudiant, 'visite_id'=>$id_visite, 'ancien_compte_rendu'=>$ancien_compte_rendu]);
     }
 
 

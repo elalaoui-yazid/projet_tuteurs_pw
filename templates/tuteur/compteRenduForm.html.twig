@@ -74,9 +74,24 @@ form input[type="submit"]:active {
   {{ parent() }}
 
   
-  <form action="/visite/{{id_etudiant}}/{{id_visite}}/compte-rendu" method="POST">
+  <form action="/visite/{{etudiant_id}}/{{visite_id}}/compte-rendu" method="POST">
 
+    <textarea name="compte_rendu_text"
+          placeholder="Votre compte rendu"
+          cols="40"
+          rows="10">{% if ancien_compte_rendu is not empty %}{{ ancien_compte_rendu }}{% endif %}</textarea>
+
+    <br>
+
+    <p>OU :</p> 
+
+    <input type="file" name="compte_rendu_pdf" accept="application/pdf">
   
+    <br><br>
+
+
+    <input type="submit" value="Enregistrer" name="submit">
+
 
   </form>
 
