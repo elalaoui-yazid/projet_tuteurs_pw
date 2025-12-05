@@ -20,8 +20,9 @@
 
             <div class="liste">
                 <ul>
-                    {% if userName is defined %}
-                        <li><a href="#">{{ userName }}</a></li>
+                    {% if tuteur_nom is defined %}
+                        <li><a href="/dashboard">{{ tuteur_nom }}</a></li>
+                        <li><a href="#">Gestion</a></li>
                         <li><a href="/logout">Déconnexion</a></li>
                     {% else %}
                         <li><a href="/loginPage">Connexion</a></li>

@@ -26,15 +26,18 @@ class Etudiant
     #[ORM\Column(length: 70)]
     private ?string $formation = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Tuteur $tuteur = null;
+
 
     /**
      * @var Collection<int, Visite>
      */
     #[ORM\OneToMany(targetEntity: Visite::class, mappedBy: 'etudiant')]
     private Collection $visites;
+
+
+    #[ORM\ManyToOne(targetEntity: Tuteur::class, inversedBy: 'etudiants')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tuteur $tuteur = null;
 
     public function __construct()
     {

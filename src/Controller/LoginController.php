@@ -35,7 +35,8 @@ final class LoginController extends AbstractController
             $session = $request->getSession();
             $session->set('tuteur_id', $user->getId());
            
-            return $this->render('tuteur/dashboard.html.twig', ['userName'=>$user->getNom()]);
+            //return $this->render('tuteur/dashboard.html.twig', ['userName'=>$user->getNom()]);
+            return $this->redirectToRoute('app_dashboard'); // le name de la route
         }
 
         $error = "Erreur de connexion, Email inconnu";
