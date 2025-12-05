@@ -112,11 +112,75 @@ final class GestionEtudiantsController extends AbstractController{
 
 
 
-      #[Route('/updateStudentForm', name: 'updateStudentForm')]
-    public function updateStudentForm(Request $request): Response{ 
+      #[Route('/updateStudentForm/{id}', name: 'updateStudentForm')]
+    public function updateStudentForm(Request $request, $id): Response{ 
+      
+      $repository = $this->em->getRepository(Etudiant::class);
 
-      return $this->render('tuteur/updateStudentForm.html.twig');
+      $etudiant = $repository->find($id);
+
+      $nom = $etudiant->getNom();
+      $prenom = $etudiant->getPrenom();
+      $formation = $etudiant->getFormation();
+
+      return $this->render('tuteur/updateStudentForm.html.twig', ['id'=>$id, 'nom'=>$nom, 'prenom'=>$prenom, 'formation'=>$formation]);
     }
+
+
+      #[Route('/etudiant/update/{id}', name: 'updateStudent')]
+    public function updateStudent(Request $request, $id): Response{ 
+
+      $repository = $this->em->getRepository(Etudiant::class);
+      $etudiant = $repository->find($id);
+      $message="";
+
+
+      $tuteur_id = $request->getSession()->get('tuteur_id');
+
+      $repository = $this->em->getRepository(Tuteur::class);
+        
+      $tuteur = $repository->find($tuteur_id);
+
+      $tuteur_nom = $tuteur->getNom();
+
+      if(isset($_POST['submit'])){
+
+        $nouveau_nom = $_POST['nom'];
+        $nouveau_prenom = $_POST['prenom'];
+        $nouvelle_formation = $_POST['formation'];
+
+        $etudiant->setNom($nouveau_nom);
+        $etudiant->setPrenom($nouveau_prenom);
+        $etudiant->setFormation($nouvelle_formation);
+
+        try{
+          $this->em->flush();
+          $message = "Modification de l'étudiant faite avec succes";
+        }
+        catch(Exception $e){
+          $message="Erreur lors de la modification de l'étudiant : " . $e->getMessage();
+        }
+      }
+
+      
+
+      $etudiants = $tuteur->getEtudiants();
+        
+
+      $tabEtudiants = [];
+        
+
+      foreach ($etudiants as $etudiant){
+          array_push($tabEtudiants, ['id'=>$etudiant->getId(),'nom'=>$etudiant->getNom(), 'prenom'=>$etudiant->getPrenom(), 'formation'=>$etudiant->getFormation()]);
+      }
+
+
+      return $this->render('tuteur/gestion.html.twig',['message'=>$message, 'tuteur_nom'=>$tuteur_nom, 'etudiants'=>$tabEtudiants]); 
+      
+      
+    }
+
+
 
 
 
