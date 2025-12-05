@@ -1,0 +1,169 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Gestion d'étudiant {% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+/* Table */
+table {
+    width: fit-content;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+th {
+    background: #34495e;
+    color: white;
+}
+
+tr:nth-child(even) td {
+    background: #f5f7fa;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+td[colspan] {
+    text-align: center;
+    font-style: italic;
+    color: #777;
+}
+
+/* Boutons d'action */
+.action-btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    margin-right: 5px;
+    transition: background-color 0.3s;
+}
+
+.view-btn { background-color: #3498db; }
+.view-btn:hover { background-color: #2980b9; }
+
+.add-btn { background-color: #2ecc71; }
+.add-btn:hover { background-color: #27ae60; }
+
+.edit-btn { background-color: #f1c40f; color: #333; }
+.edit-btn:hover { background-color: #d4ac0d; color: #fff; }
+
+.delete-btn { background-color: #e74c3c; }
+.delete-btn:hover { background-color: #c0392b; }
+
+/* Conteneur du bouton Ajouter Étudiant */
+.button-right {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px auto;
+    width: fit-content;
+    max-width: 100%;
+}
+
+/* Bouton Ajouter Étudiant */
+.button-right a.add-student-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #1abc9c;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s ease-in-out;
+}
+
+.button-right a.add-student-btn:hover {
+    background: #16a085;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.button-right a.add-student-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+    
+}
+        .messages {
+            max-width: 350px;
+            margin: 20px auto;
+            padding: 10px;
+        }
+
+        .messages h3 {
+            background: #ffdddd;
+            border-left: 4px solid #ff5c5c;
+            padding: 10px;
+            border-radius: 6px;
+            color: #b80000;
+            font-size: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+</style>
+{% endblock %}
+
+
+
+
+{% block body%}
+
+    {% if message is defined %}
+        <div class="messages">
+            <h3>ⓘ {{ message }}</h3>
+        </div>
+    {% endif %}
+
+
+  <p>Votre liste d'étudiants :</p>
+
+        <table>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Formation</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for etudiant in etudiants %}
+            <tr>
+                <td>{{etudiant.nom}}</td>
+                <td>{{etudiant.prenom}}</td>
+                <td>{{etudiant.formation}}</td>
+                <td class="actions">
+                  <a href="" class="action-btn view-btn">Voir visites</a>
+                  <a href="" class="action-btn add-btn">Ajouter visite</a>
+                  <a href="/updateStudentForm" class="action-btn edit-btn">Modifier</a>
+                  <a href="" class="action-btn delete-btn">Supprimer</a>
+              </td>
+
+                
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan='4'>Aucun étudiant pour le moment</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <div class="button-right">
+            <a href="/addStudentForm" class="add-student-btn">Ajouter Étudiant</a>
+        </div>
+
+{% endblock %}
